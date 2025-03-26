@@ -1,3 +1,5 @@
+"use server";
+
 import { sendEmail } from './emailService';
 import { format } from 'date-fns';
 
