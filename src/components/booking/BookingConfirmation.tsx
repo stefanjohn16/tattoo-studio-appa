@@ -6,15 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { format } from 'date-fns';
 import { saveBooking, generatePdfReceipt } from "@/lib/firebase/storage";
 import { Check, Download, Mail } from "lucide-react";
-
-// Create a server action for sending emails
-const sendEmailAction = async (email, bookingData, receiptUrl) => {
-  'use server';
-  
-  // Import the email function only on the server side
-  const { sendBookingConfirmationEmail } = await import('@/lib/email');
-  return await sendBookingConfirmationEmail(email, bookingData, receiptUrl);
-};
+import { sendEmailAction } from "@/app/actions/emailActions";
 
 export const BookingConfirmation = ({ bookingData, onBack }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -46,7 +38,7 @@ export const BookingConfirmation = ({ bookingData, onBack }) => {
 
   const handleSendEmail = async () => {
     try {
-      // Use the server action to send the email
+      // Use the imported server action to send the email
       await sendEmailAction(bookingData.clientEmail, bookingData, receiptUrl);
       setEmailSent(true);
     } catch (error) {
